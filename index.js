@@ -77,8 +77,3 @@ bot.on('message', (msg) => {
     bot.sendMessage(chatId, `https://t.me/kazananlarklubuforum`);
   }
 });
-
-// Kullanıcıları konsola yazdır
-setInterval(() => {
-    console.log('Şu anki kullanıcı listesi:', users);
-}, 60000); // Her dakika kullanıcı listesini yazdır
