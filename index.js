@@ -35,7 +35,7 @@ bot.on('message', (msg) => {
   const now = Date.now();
 
   if (msg.chat.type === 'group' || msg.chat.type === 'supergroup') {
-    if (lastMessageTime[chatId] && now - lastMessageTime[chatId] < 1 * 60 * 1000) {
+    if (lastMessageTime[chatId] && now - lastMessageTime[chatId] < 30 * 60 * 1000) {
       // 30 dakika içinde mesaj gönderilmişse, yanıt verme
       console.log('30 dakika içinde mesaj gönderildi, yanıt verilmiyor.');
       return;
@@ -45,7 +45,7 @@ bot.on('message', (msg) => {
     lastMessageTime[chatId] = now;
 
     // Kullanıcıya özel mesaj olarak davet linkini gönderebilmek için bilgilendirme mesajı gönder
-    bot.sendMessage(chatId, `Merhaba ${msg.from.first_name}, işte davet linki: ${invitationLink}`);
+    bot.sendMessage(chatId, `Merhaba, Kazananlar Kulübü'ne üye olmak ister misin?: ${invitationLink}`);
   }
 });
 
