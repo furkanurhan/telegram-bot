@@ -91,9 +91,9 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-app.post(`/webhook/${token}`, (req, res) => {
+app.post('/webhook', (req, res) => {
   bot.processUpdate(req.body);
-  res.sendStatus(200);
+  res.send('Webhook is running');
 });
 
 const PORT = process.env.PORT || 3000;
