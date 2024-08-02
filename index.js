@@ -82,7 +82,7 @@ bot.on('message', (msg) => {
   // Sadece grup sohbetlerinde mesajı işleyelim
   if (msg.chat.type === 'group' || msg.chat.type === 'supergroup') {
     // Kullanıcıya özel mesaj olarak davet linkini gönderebilmek için bilgilendirme mesajı gönder
-    bot.sendMessage(chatId, invitationLink);
+    bot.sendMessage(chatId, `Hello ${msg.chat.description}`);
   }
 });
 
