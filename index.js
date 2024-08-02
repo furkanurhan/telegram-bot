@@ -93,7 +93,7 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', (req, res) => {
   bot.processUpdate(req.body);
-  res.send('Webhook is running');
+  res.sendStatus(200);
 });
 
 const PORT = process.env.PORT || 3000;
