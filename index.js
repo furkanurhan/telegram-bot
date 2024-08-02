@@ -45,7 +45,7 @@ bot.on('message', (msg) => {
     lastMessageTime[chatId] = now;
 
     // Kullanıcıya özel mesaj olarak davet linkini gönderebilmek için bilgilendirme mesajı gönder
-    bot.sendMessage(chatId, `Merhaba, Kazananlar Kulübü'ne üye olmak ister misin?: ${invitationLink}`);
+    bot.sendMessage(chatId, `Merhaba, Kazananlar Kulübü'ne üye olmak ister misin? ${invitationLink}`);
   }
 });
 
