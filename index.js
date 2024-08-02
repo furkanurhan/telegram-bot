@@ -1,11 +1,19 @@
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
 const TelegramBot = require('node-telegram-bot-api');
 
 // BotFather'dan aldığınız token
-const token = '7458733472:AAE7FP7tnVgyaAuCl-pbUcBNeNHaw12c6MA';
-const invitationLink = 'https://t.me/kazananlarklubuforum'; // Bu, oluşturduğunuz davet bağlantısı olacaktır.
+const token = process.env.TELEGRAM_BOT_TOKEN;
+
+const invitationLink = process.env.INVITATION_LINK;
 
 // Botu oluşturun
 const bot = new TelegramBot(token, { polling: true });
+
+// init express
+const app = express();
+app.use(bodyParser.json());
 
 // Kullanıcıları saklamak için bir dizi
 const users = [];
@@ -74,6 +82,21 @@ bot.on('message', (msg) => {
   // Sadece grup sohbetlerinde mesajı işleyelim
   if (msg.chat.type === 'group' || msg.chat.type === 'supergroup') {
     // Kullanıcıya özel mesaj olarak davet linkini gönderebilmek için bilgilendirme mesajı gönder
-    bot.sendMessage(chatId, `https://t.me/kazananlarklubuforum`);
+    bot.sendMessage(chatId, invitationLink);
   }
+});
+
+// Ana dizine yapılan isteklere yanıt olarak "Server is running" döndür
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
+
+app.post(`/webhook/${token}`, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
