@@ -15,24 +15,35 @@ const bot = new TelegramBot(token);
 const app = express();
 app.use(bodyParser.json());
 
-// Kullanıcıdan /start komutunu aldığında işlem yap
-bot.onText(/\/start/, (msg) => {
-  const chatId = msg.chat.id;
-  const userId = msg.from.id;
+let lastMessageTime = {}; // Kullanıcıya göre son mesaj zamanı
 
-  // Özel mesajda olduğundan emin ol
-  if (msg.chat.type === 'private') {
-    // Özel mesaj olarak davet linkini gönder
-    bot.sendMessage(userId, `Merhaba ${msg.from.first_name}, işte davet linki: ${invitationLink}`);
-  }
-});
+// Kullanıcıdan /start komutunu aldığında işlem yap
+// bot.onText(/\/start/, (msg) => {
+//   const chatId = msg.chat.id;
+//   const userId = msg.from.id;
+
+//   // Özel mesajda olduğundan emin ol
+//   if (msg.chat.type === 'private') {
+//     // Özel mesaj olarak davet linkini gönder
+//     bot.sendMessage(userId, `Merhaba ${msg.from.first_name}, işte davet linki: ${invitationLink}`);
+//   }
+// });
 
 // Diğer tüm mesajları ele al (eğer gerekliyse)
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
+  const now = Date.now();
 
-  // Sadece grup sohbetlerinde mesajı işleyelim
   if (msg.chat.type === 'group' || msg.chat.type === 'supergroup') {
+    if (lastMessageTime[chatId] && now - lastMessageTime[chatId] < 1 * 60 * 1000) {
+      // 30 dakika içinde mesaj gönderilmişse, yanıt verme
+      console.log('30 dakika içinde mesaj gönderildi, yanıt verilmiyor.');
+      return;
+    }
+
+    // Son mesaj zamanını güncelle
+    lastMessageTime[chatId] = now;
+
     // Kullanıcıya özel mesaj olarak davet linkini gönderebilmek için bilgilendirme mesajı gönder
     bot.sendMessage(chatId, `Hello ${msg.chat.description}`);
   }
