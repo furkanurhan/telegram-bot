@@ -23,7 +23,7 @@ bot.on('message', (msg) => {
 });
 
 // Ana dizine yapılan isteklere yanıt olarak "Server is running" döndür
-app.get('/', (req, res) => {
+app.post('/', (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
 });
