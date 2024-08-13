@@ -28,8 +28,12 @@ app.get('/', (req, res) => {
 });
 
 app.post('/webhook', (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
+  try {
+    bot.processUpdate(req.body);
+    res.status(200).send('Update processed successfully');
+  } catch (error) {
+    res.status(500).send('Error processing update');
+  }
 });
 
 const PORT = process.env.PORT || 3000;
