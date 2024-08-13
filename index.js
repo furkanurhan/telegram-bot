@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 // Diğer tüm mesajları ele al (eğer gerekliyse)
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
-  const chatText = msg.chat.text;
+  const chatText = msg.text;
   bot.sendMessage(chatId, `${chatText} ${invitationLink}`);
 });
 
