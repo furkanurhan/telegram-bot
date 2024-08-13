@@ -24,10 +24,6 @@ bot.on('message', (msg) => {
 
 // Ana dizine yapılan isteklere yanıt olarak "Server is running" döndür
 app.get('/', (req, res) => {
-  res.send('Server is running');
-});
-
-app.post('/webhook', (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
 });
@@ -36,3 +32,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+https://api.telegram.org/bot7458733472:AAE7FP7tnVgyaAuCl-pbUcBNeNHaw12c6MA/setWebhook?url=https://telegram-bot-green-tau.vercel.app/webhook
+
+https://api.telegram.org/bot7458733472:AAE7FP7tnVgyaAuCl-pbUcBNeNHaw12c6MA/getWebhookInfo
