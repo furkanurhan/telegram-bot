@@ -17,8 +17,8 @@ app.use(bodyParser.json());
 
 // Diğer tüm mesajları ele al (eğer gerekliyse)
 bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, `${invitationLink}`);
+  // const chatId = msg.chat.id;
+  bot.sendMessage(msg, `${invitationLink}`);
 });
 
 // Ana dizine yapılan isteklere yanıt olarak "Server is running" döndür
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', (req, res) => {
   bot.processUpdate(req.body);
-  res.status(404).send('Update processed successfully');
+  res.sendStatus(200);
 });
 
 const PORT = process.env.PORT || 3000;
