@@ -15,24 +15,17 @@ const bot = new TelegramBot(token);
 const app = express();
 app.use(bodyParser.json());
 
-// Diğer tüm mesajları ele al (eğer gerekliyse)
-bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
-  const chatText = msg.text;
-  bot.sendMessage(chatId, `${chatText} ${invitationLink}`);
-});
-
 // Ana dizine yapılan isteklere yanıt olarak "Server is running" döndür
 app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-async function sendMessage(chatId, text) {
+async function sendMessage(chatId) {
   try {
-    const response = await bot.sendMessage(chatId, text);
+    const response = await bot.sendMessage(chatId, `${invitationLink}`);
     console.log('Message sent:', response);
   } catch (error) {
-    console.error('Error sending message:', error.response ? error.response.body : error.message);
+    console.error('Error sending message');
   }
 }
 
@@ -40,8 +33,7 @@ app.post('/webhook', async (req, res) => {
   try {
     const update = req.body;
     const chatId = update.message.chat.id;
-    const messageText = update.message.text
-    await sendMessage(chatId, messageText);
+    await sendMessage(chatId);
     res.status(200).send('Update received');
   } catch (error) {
     res.status(500).send('Internal Server Error');
