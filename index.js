@@ -27,12 +27,24 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-app.post('/webhook', (req, res) => {
+async function sendMessage(chatId, text) {
   try {
-    bot.processUpdate(req.body);
-    res.status(200).send('Update processed successfully');
+    const response = await bot.sendMessage(chatId, text);
+    console.log('Message sent:', response);
   } catch (error) {
-    res.status(500).send('Error processing update');
+    console.error('Error sending message:', error.response ? error.response.body : error.message);
+  }
+}
+
+app.post('/webhook', async (req, res) => {
+  try {
+    const update = req.body;
+    const chatId = update.message.chat.id;
+    const messageText = update.message.text
+    await sendMessage(chatId, messageText);
+    res.status(200).send('Update received');
+  } catch (error) {
+    res.status(500).send('Internal Server Error');
   }
 });
 
