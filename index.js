@@ -17,8 +17,9 @@ app.use(bodyParser.json());
 
 // Diğer tüm mesajları ele al (eğer gerekliyse)
 bot.on('message', (msg) => {
-  // const chatId = msg.chat.id;
-  bot.sendMessage(msg, `${invitationLink}`);
+  const chatId = msg.chat.id;
+  const chatText = msg.chat.text;
+  bot.sendMessage(chatId, `${chatText} ${invitationLink}`);
 });
 
 // Ana dizine yapılan isteklere yanıt olarak "Server is running" döndür
