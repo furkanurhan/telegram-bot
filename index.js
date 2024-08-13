@@ -9,7 +9,7 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const invitationLink = process.env.INVITATION_LINK;
 
 // Botu oluşturun
-const bot = new TelegramBot(token, { polling: true });
+const bot = new TelegramBot(token);
 
 // init express
 const app = express();
