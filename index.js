@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', (req, res) => {
   bot.processUpdate(req.body);
-  res.status(200).send('Update processed successfully');
+  res.status(404).send('Update processed successfully');
 });
 
 const PORT = process.env.PORT || 3000;
