@@ -36,7 +36,7 @@ app.post('/webhook', async (req, res) => {
     await sendMessage(chatId);
     res.status(200).send('Update received');
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send('error');
   }
 });
 
