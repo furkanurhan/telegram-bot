@@ -42,7 +42,7 @@ app.post('/webhook', async (req, res) => {
       error: error.message,  // Include the error message
       stack: error.stack     // Optionally include the stack trace for debugging
     };
-    res.status(500).json(body);
+    res.status(500).send(body);
   }
 });
 
