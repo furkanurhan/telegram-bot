@@ -36,13 +36,7 @@ app.post('/webhook', async (req, res) => {
     await sendMessage(chatId);
     res.status(200).send('Update received');
   } catch (error) {
-    // Capture the error message and include it in the response
-    const body = {
-      message: "Internal Server Error",
-      error: error.message,  // Include the error message
-      stack: error.stack     // Optionally include the stack trace for debugging
-    };
-    res.status(500).send(body);
+    res.status(500).send(error.message);
   }
 });
 
