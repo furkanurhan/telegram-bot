@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 async function sendMessage(chatId) {
   try {
-    const response = await bot.sendMessage(chatId, `${invitationLink}`);
+    const response = await bot.sendMessage(chatId, `Daha Fazla Bilgi İçin ⬇️ ${invitationLink}`);
     console.log('Message sent:', response);
   } catch (error) {
     console.error('Error sending message');
