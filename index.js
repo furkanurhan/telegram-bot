@@ -20,9 +20,31 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
+async function isAdmin(chatId, userId) {
+  try {
+    const administrators = await bot.getChatAdministrators(chatId);
+    return administrators.some(admin => admin.user.id === userId);
+  } catch (error) {
+    console.error('Error checking admin status:', error);
+    return false;
+  }
+}
+
 async function sendMessage(chatId) {
   try {
-    const response = await bot.sendMessage(chatId, `Daha Fazla Bilgi İçin ⬇️ ${invitationLink}`);
+    const response = await bot.sendMessage(chatId, `Daha Fazla Bilgi İçin ⬇️`, {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: '📎 FORUM GİRİŞ',
+              url: invitationLink
+            }
+          ]
+        ]
+      },
+      parse_mode: 'HTML'
+    });
     console.log('Message sent:', response);
   } catch (error) {
     console.error('Error sending message');
@@ -32,8 +54,34 @@ async function sendMessage(chatId) {
 app.post('/webhook', async (req, res) => {
   try {
     const update = req.body;
+
+    if (!update.hasOwnProperty('message')) {
+      res.status(200).send('message does not exist');
+      return
+    }
+    
     const chatId = update.message.chat.id;
-    await sendMessage(chatId);
+    const userId = update.message.from.id;
+    const messageId = update.message.message_id;
+
+    console.info('USER: ', update.message.from?.id, update.message.from?.first_name)
+
+    // Botun mesajlarını geç
+    // if (userId === 1087968824) {
+    //   res.status(200).send('Bot message ignored');
+    //   return;
+    // }
+
+    const isUserAdmin = await isAdmin(chatId, userId);
+
+    if (!isUserAdmin) {
+      // Mesajı sil
+      await bot.deleteMessage(chatId, messageId);
+    } else {
+      // Eğer kullanıcı adminse, bilgilendirme mesajını gönder
+      await sendMessage(chatId);
+    }
+
     res.status(200).send('Update received');
   } catch (error) {
     res.status(500).send('error');
